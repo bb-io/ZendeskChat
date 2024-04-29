@@ -50,6 +50,10 @@ public class ChatDto
     [JsonProperty("type")]
     [Display("Type")]
     public string Type { get; set; }
+    
+    [JsonProperty("message")]
+    [Display("Message")]
+    public string Message { get; set; }
 
     [JsonProperty("unread")]
     [Display("Unread")]

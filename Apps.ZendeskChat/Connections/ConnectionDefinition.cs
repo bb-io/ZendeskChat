@@ -14,6 +14,9 @@ public class ConnectionDefinition : IConnectionDefinition
             AuthenticationType = ConnectionAuthenticationType.OAuth2,
             ConnectionUsage = ConnectionUsage.Actions,
             ConnectionProperties = new List<ConnectionProperty>()
+            {
+                new(CredsNames.Subdomain) { DisplayName = "Subdomain" }
+            }
         },
     };
 

@@ -19,6 +19,6 @@ public class ZendeskChatClient : BlackBirdRestClient
     protected override Exception ConfigureErrorException(RestResponse response)
     {
         var error = JsonConvert.DeserializeObject<ErrorResponse>(response.Content);
-        return new($"{error.Error}: {error.Description}");
+        return new(error.Description);
     }
 }
