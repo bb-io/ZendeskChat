@@ -5,7 +5,6 @@ using Apps.ZendeskChat.Models.Dto;
 using Apps.ZendeskChat.Models.Request.Visitor;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
-using Blackbird.Applications.Sdk.Common.Authentication;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.Sdk.Utils.Extensions.Http;
 using Newtonsoft.Json;
