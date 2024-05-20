@@ -20,6 +20,7 @@ public class OAuth2AuthorizeService : BaseInvocable, IOAuth2AuthorizeService
             { "client_id", ApplicationConstants.ClientId },
             { "redirect_uri", HttpUtility.UrlEncode(InvocationContext.UriInfo.ImplicitGrantRedirectUri.ToString()) },
             { "response_type", "token" },
+            { "state", values["state"] },
             { "subdomain", values[CredsNames.Subdomain] },
             { "scope", HttpUtility.UrlEncode(ApplicationConstants.Scope) }
         };
