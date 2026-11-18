@@ -20,7 +20,7 @@ public class ChatActions : ZendeskChatInvocable
     {
     }
 
-    [Action("List chats", Description = "List all chats")]
+    [Action("List chats", Description = "Search for chat records and output the results.")]
     public async Task<ListChatsResponse> ListChats()
     {
         var request = new ZendeskChatRequest(ApiEndpoints.Chats, Method.Get, Creds);
@@ -30,7 +30,7 @@ public class ChatActions : ZendeskChatInvocable
         return new(response.Chats.ToArray());
     }
 
-    [Action("Get chat", Description = "Get specific chat")]
+    [Action("Get chat", Description = "Get the details of a selected chat.")]
     public Task<ChatDto> GetChat([ActionParameter] ChatRequest chat)
     {
         var request = new ZendeskChatRequest($"{ApiEndpoints.Chats}/{chat.ChatId}", Method.Get, Creds);
@@ -38,7 +38,7 @@ public class ChatActions : ZendeskChatInvocable
         return Client.ExecuteWithErrorHandling<ChatDto>(request);
     }
 
-    [Action("Create chat", Description = "Create new chat")]
+    [Action("Create chat", Description = "Create an offline message with the visitor's details.")]
     public Task<ChatDto> CreateChat([ActionParameter] CreateChatInput input)
     {
         var request = new ZendeskChatRequest(ApiEndpoints.Chats, Method.Post, Creds)
@@ -50,7 +50,7 @@ public class ChatActions : ZendeskChatInvocable
         return Client.ExecuteWithErrorHandling<ChatDto>(request);
     }
 
-    [Action("Delete chat", Description = "Delete specific chat")]
+    [Action("Delete chat", Description = "Delete a selected chat record.")]
     public Task DeleteChat([ActionParameter] ChatRequest chat)
     {
         var request = new ZendeskChatRequest($"{ApiEndpoints.Chats}/{chat.ChatId}", Method.Delete, Creds);
