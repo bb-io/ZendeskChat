@@ -19,7 +19,7 @@ public class VisitorActions : ZendeskChatInvocable
     {
     }
     
-    [Action("Create visitor", Description = "Create a new visitor")]
+    [Action("Create visitor", Description = "Create a visitor profile with contact details and notes.")]
     public Task<VisitorDto> CreateVisitor([ActionParameter] CreateVisitorRequest visitor)
     {
         var request = new ZendeskChatRequest(ApiEndpoints.Visitors, Method.Post, Creds)
@@ -28,7 +28,7 @@ public class VisitorActions : ZendeskChatInvocable
         return Client.ExecuteWithErrorHandling<VisitorDto>(request);
     }
 
-    [Action("Get visitor", Description = "Get details of specific visitor")]
+    [Action("Get visitor", Description = "Get the profile for a visitor by ID.")]
     public Task<VisitorDto> GetVisitor([ActionParameter] VisitorRequest visitor)
     {
         var request = new ZendeskChatRequest($"{ApiEndpoints.Visitors}/{visitor.VisitorId}", Method.Get, Creds);
@@ -36,7 +36,7 @@ public class VisitorActions : ZendeskChatInvocable
         return Client.ExecuteWithErrorHandling<VisitorDto>(request);
     }
 
-    [Action("Update visitor", Description = "Update details of specific visitor")]
+    [Action("Update visitor", Description = "Update the supplied contact details or notes for a visitor.")]
     public Task<VisitorDto> UpdateVisitor(
         [ActionParameter] VisitorRequest visitor,
         [ActionParameter] UpdateVisitorRequest input)

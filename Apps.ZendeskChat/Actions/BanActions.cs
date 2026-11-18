@@ -19,7 +19,7 @@ public class BanActions : ZendeskChatInvocable
     {
     }
     
-    [Action("List bans", Description = "List all bans")]
+    [Action("List bans", Description = "Search for visitor and IP address bans.")]
     public Task<BansResponseWrapper> ListBans()
     {
         var request = new ZendeskChatRequest(ApiEndpoints.Bans, Method.Get, Creds);
@@ -27,7 +27,7 @@ public class BanActions : ZendeskChatInvocable
         return Client.ExecuteWithErrorHandling<BansResponseWrapper>(request);
     }
 
-    [Action("List banned IP addresses", Description = "List all banned IP addresses")]
+    [Action("List banned IP addresses", Description = "Search for banned IP addresses and output the addresses.")]
     public async Task<ListBannedIpsResponse> ListBannedIps()
     {
         var request = new ZendeskChatRequest($"{ApiEndpoints.Bans}/ip", Method.Get, Creds);
@@ -37,7 +37,7 @@ public class BanActions : ZendeskChatInvocable
         return new(response);
     }
     
-    [Action("Get ban", Description = "Get details of a specific ban")]
+    [Action("Get ban", Description = "Get the details of a selected ban.")]
     public Task<BanDto> GetBan([ActionParameter] BanRequest ban)
     {
         var request = new ZendeskChatRequest($"{ApiEndpoints.Bans}/{ban.BanId}", Method.Get, Creds);
@@ -45,7 +45,7 @@ public class BanActions : ZendeskChatInvocable
         return Client.ExecuteWithErrorHandling<BanDto>(request);
     }
     
-    [Action("Ban visitor", Description = "Ban specific visitor")]
+    [Action("Ban visitor", Description = "Block a visitor by ID and record the reason for the ban.")]
     public Task<BanDto> BanVisitor([ActionParameter] BanVisitorRequest input)
     {
         var request = new ZendeskChatRequest(ApiEndpoints.Bans, Method.Post, Creds)
@@ -54,7 +54,7 @@ public class BanActions : ZendeskChatInvocable
         return Client.ExecuteWithErrorHandling<BanDto>(request);
     }
     
-    [Action("Ban IP", Description = "Ban specific IP address")]
+    [Action("Ban IP", Description = "Block an IP address and record the reason for the ban.")]
     public Task<BanDto> BanIp([ActionParameter] BanIpRequest input)
     {
         var request = new ZendeskChatRequest(ApiEndpoints.Bans, Method.Post, Creds)
@@ -63,7 +63,7 @@ public class BanActions : ZendeskChatInvocable
         return Client.ExecuteWithErrorHandling<BanDto>(request);
     }
     
-    [Action("Delete ban", Description = "Delete specific ban")]
+    [Action("Delete ban", Description = "Remove a selected visitor or IP address ban.")]
     public Task DeleteBan([ActionParameter] BanRequest ban)
     {
         var request = new ZendeskChatRequest($"{ApiEndpoints.Bans}/{ban.BanId}", Method.Delete, Creds);
