@@ -1,15 +1,23 @@
 ﻿using Apps.ZendeskChat.OAuth;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Authentication.OAuth2;
+using Blackbird.Applications.Sdk.Common.Invocation;
+using Blackbird.Applications.Sdk.Common.Metadata;
 
 namespace Apps.ZendeskChat;
 
-public class ZendeskChatApplication : IApplication
+public class ZendeskChatApplication : BaseInvocable, IApplication, ICategoryProvider
 {
     private string _name;
     private readonly Dictionary<Type, object> _typesInstances;
 
-    public ZendeskChatApplication()
+    public IEnumerable<ApplicationCategory> Categories
+    {
+        get => [ApplicationCategory.Crm, ApplicationCategory.Communication];
+        set { }
+    }
+
+    public ZendeskChatApplication(InvocationContext context) : base(context)
     {
         _name = "Zendesk Chat";
         _typesInstances = CreateTypesInstances();
@@ -27,6 +35,7 @@ public class ZendeskChatApplication : IApplication
         {
             throw new InvalidOperationException($"Instance of type '{typeof(T)}' not found");
         }
+
         return (T)value;
     }
 
@@ -34,7 +43,7 @@ public class ZendeskChatApplication : IApplication
     {
         return new Dictionary<Type, object>
         {
-            { typeof(IOAuth2AuthorizeService), new OAuth2AuthorizeService() },
+            { typeof(IOAuth2AuthorizeService), new OAuth2AuthorizeService(InvocationContext) },
             { typeof(IOAuth2TokenService), new OAuth2TokenService() }
         };
     }

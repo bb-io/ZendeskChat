@@ -30,6 +30,6 @@ public class ChatDataHandler : BaseInvocable, IAsyncDataSourceHandler
             .Where(x => context.SearchString == null ||
                         x.Id.Contains(context.SearchString, StringComparison.OrdinalIgnoreCase))
             .Take(20)
-            .ToDictionary(x => x.Id, x => x.Id);
+            .ToDictionary(x => x.Id, x => x.Message);
     }
 }

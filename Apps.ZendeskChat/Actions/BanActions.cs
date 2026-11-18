@@ -1,84 +1,73 @@
 ﻿using Apps.ZendeskChat.Api;
 using Apps.ZendeskChat.Constants;
+using Apps.ZendeskChat.Invocables;
 using Apps.ZendeskChat.Models.Dto;
 using Apps.ZendeskChat.Models.Request.Ban;
 using Apps.ZendeskChat.Models.Response.Ban;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
-using Blackbird.Applications.Sdk.Common.Authentication;
+using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.Sdk.Utils.Extensions.Http;
 using RestSharp;
 
 namespace Apps.ZendeskChat.Actions;
 
 [ActionList]
-public class BanActions
+public class BanActions : ZendeskChatInvocable
 {
-    [Action("List bans", Description = "List all bans")]
-    public Task<BansResponseWrapper> ListBans(
-        IEnumerable<AuthenticationCredentialsProvider> creds)
+    public BanActions(InvocationContext invocationContext) : base(invocationContext)
     {
-        var client = new ZendeskChatClient();
-        var request = new ZendeskChatRequest(ApiEndpoints.Bans, Method.Get, creds);
+    }
+    
+    [Action("List bans", Description = "List all bans")]
+    public Task<BansResponseWrapper> ListBans()
+    {
+        var request = new ZendeskChatRequest(ApiEndpoints.Bans, Method.Get, Creds);
 
-        return client.ExecuteWithErrorHandling<BansResponseWrapper>(request);
+        return Client.ExecuteWithErrorHandling<BansResponseWrapper>(request);
     }
 
     [Action("List banned IP addresses", Description = "List all banned IP addresses")]
-    public async Task<ListBannedIpsResponse> ListBannedIps(
-        IEnumerable<AuthenticationCredentialsProvider> creds)
+    public async Task<ListBannedIpsResponse> ListBannedIps()
     {
-        var client = new ZendeskChatClient();
-        var request = new ZendeskChatRequest($"{ApiEndpoints.Bans}/ip", Method.Get, creds);
+        var request = new ZendeskChatRequest($"{ApiEndpoints.Bans}/ip", Method.Get, Creds);
 
-        var response = await client.ExecuteWithErrorHandling<List<string>>(request);
+        var response = await Client.ExecuteWithErrorHandling<List<string>>(request);
 
         return new(response);
     }
     
     [Action("Get ban", Description = "Get details of a specific ban")]
-    public Task<BanDto> GetBan(
-        IEnumerable<AuthenticationCredentialsProvider> creds,
-        [ActionParameter] BanRequest ban)
+    public Task<BanDto> GetBan([ActionParameter] BanRequest ban)
     {
-        var client = new ZendeskChatClient();
-        var request = new ZendeskChatRequest($"{ApiEndpoints.Bans}/{ban.BanId}", Method.Get, creds);
+        var request = new ZendeskChatRequest($"{ApiEndpoints.Bans}/{ban.BanId}", Method.Get, Creds);
 
-        return client.ExecuteWithErrorHandling<BanDto>(request);
+        return Client.ExecuteWithErrorHandling<BanDto>(request);
     }
     
     [Action("Ban visitor", Description = "Ban specific visitor")]
-    public Task<BanDto> BanVisitor(
-        IEnumerable<AuthenticationCredentialsProvider> creds,
-        [ActionParameter] BanVisitorRequest input)
+    public Task<BanDto> BanVisitor([ActionParameter] BanVisitorRequest input)
     {
-        var client = new ZendeskChatClient();
-        var request = new ZendeskChatRequest(ApiEndpoints.Bans, Method.Post, creds)
+        var request = new ZendeskChatRequest(ApiEndpoints.Bans, Method.Post, Creds)
             .WithJsonBody(input);
 
-        return client.ExecuteWithErrorHandling<BanDto>(request);
+        return Client.ExecuteWithErrorHandling<BanDto>(request);
     }
     
     [Action("Ban IP", Description = "Ban specific IP address")]
-    public Task<BanDto> BanIp(
-        IEnumerable<AuthenticationCredentialsProvider> creds,
-        [ActionParameter] BanIpRequest input)
+    public Task<BanDto> BanIp([ActionParameter] BanIpRequest input)
     {
-        var client = new ZendeskChatClient();
-        var request = new ZendeskChatRequest(ApiEndpoints.Bans, Method.Post, creds)
+        var request = new ZendeskChatRequest(ApiEndpoints.Bans, Method.Post, Creds)
             .WithJsonBody(input);
 
-        return client.ExecuteWithErrorHandling<BanDto>(request);
+        return Client.ExecuteWithErrorHandling<BanDto>(request);
     }
     
     [Action("Delete ban", Description = "Delete specific ban")]
-    public Task DeleteBan(
-        IEnumerable<AuthenticationCredentialsProvider> creds,
-        [ActionParameter] BanRequest ban)
+    public Task DeleteBan([ActionParameter] BanRequest ban)
     {
-        var client = new ZendeskChatClient();
-        var request = new ZendeskChatRequest($"{ApiEndpoints.Bans}/{ban.BanId}", Method.Delete, creds);
+        var request = new ZendeskChatRequest($"{ApiEndpoints.Bans}/{ban.BanId}", Method.Delete, Creds);
 
-        return client.ExecuteWithErrorHandling(request);
+        return Client.ExecuteWithErrorHandling(request);
     }
 }
